@@ -43,6 +43,15 @@ export default class GameScene extends Phaser.Scene {
             frameWidth: 40,
             frameHeight: 200
         });
+
+        // Load sound
+        this.load.audio('bound', [
+            './sounds/bound.wav'
+        ]);
+
+        this.load.audio('point', [
+            './sounds/point.wav'
+        ]);
     }
 
     /**
@@ -52,8 +61,12 @@ export default class GameScene extends Phaser.Scene {
         // Init parameters for the session
         this.delay = 1000;
         this.sizePlayer = 1;
-        this.maxScore = 1;
+        this.maxScore = 3;
         this.speed = 5;
+
+        // Sound manager
+        this.boundSound = this.sound.add('bound');
+        this.pointSound = this.sound.add('point');
 
         // Instantiate timer
         this.timer = this.time.addEvent({
@@ -160,12 +173,23 @@ export default class GameScene extends Phaser.Scene {
         ball.setCollideWorldBounds(true);
         ball.setVelocity(randSpeedX, -randSpeedY);
 
+        this.physics.world.on('worldbounds', function() {
+            console.log("hello there");
+            this.boundSound.play();
+        });
+
         // Detect collision with players
-        this.physics.add.collider(ball, this.player);
-        this.physics.add.collider(ball, this.player2);
+        this.physics.add.collider(ball, this.player, function() {
+            this.boundSound.play();
+        }, null, this);
+
+        this.physics.add.collider(ball, this.player2, function() {
+            this.boundSound.play();
+        }, null, this);
 
         return ball;
     }
+
 
     /**
      * Create players elements
@@ -243,6 +267,7 @@ export default class GameScene extends Phaser.Scene {
             if (this.ball.body.x <= 2) {
                 this.ball.body.x = this.game.config.width / 2;
                 this.ball.body.y = this.game.config.height / 2;
+                this.pointSound.play();
                 // Give point
                 if (this.choice == 'playerVsComputer') {
                     this.player2Score++;
@@ -252,6 +277,7 @@ export default class GameScene extends Phaser.Scene {
             } else if (this.ball.body.x >= this.game.config.width - 50) {
                 this.ball.body.x = this.game.config.width / 2;
                 this.ball.body.y = this.game.config.height / 2;
+                this.pointSound.play();
                 if (this.choice == 'playerVsComputer') {
                     this.playerScore++;
                 } else {
@@ -272,7 +298,6 @@ export default class GameScene extends Phaser.Scene {
             'pointermove',
             function(pointer) {
                 this.player.setVelocityY((pointer.y - this.player.body.y) * 2);
-
             },
             this
         );

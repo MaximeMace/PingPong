@@ -23,12 +23,21 @@ export default class EndScene extends Phaser.Scene {
     preload() {
         // Change color background to black
         this.cameras.main.setBackgroundColor('#000000');
+
+        // Load sound
+        this.load.audio('completed', [
+            './sounds/completed.wav'
+        ]);
     }
 
     /**
      * Create and init assets
      */
     create() {
+        // Sound manager
+        this.completedSound = this.sound.add('completed');
+        this.completedSound.play();
+
         // Init text title menu
         // //@TODO 120 with text width
         this.title = this.add.text(this.game.config.width / 2 - 150, 100, 'Fin de partie', {
