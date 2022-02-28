@@ -77,21 +77,22 @@ export default class GameScene extends Phaser.Scene {
         });
 
         // Instantiate speed and display
-        this.speedText = this.add.text(150, 25, 'Speed: ' + this.speed, {
+        this.speedText = this.add.text(50, this.game.config.height - 25, 'Speed: ' + this.speed, {
             fontSize: '20px',
             fill: '#fff',
         });
 
         // Instantiate max score and display
-        this.maxScoreText = this.add.text(275, 25, 'maxScore: ' + this.maxScore, {
+        this.maxScoreText = this.add.text(200, this.game.config.height - 25, 'maxScore: ' + this.maxScore, {
             fontSize: '20px',
             fill: '#fff',
         });
 
         // Instantiate timer and display
-        this.chrono = 0;
-        this.chronoText = this.add.text(650, 25, 'Chrono: ' + this.chrono, {
-            fontSize: '20px',
+        this.timer = 0;
+        this.chronoDisplay = '';
+        this.chronoText = this.add.text(this.game.config.width / 2 - 50, 25, this.chronoDisplay, {
+            fontSize: '40px',
             fill: '#fff',
         });
 
@@ -118,7 +119,8 @@ export default class GameScene extends Phaser.Scene {
      */
     update() {
         // Set Text to display change
-        this.chronoText.setText('Chrono :' + this.chrono);
+        this.displayChrono();
+        this.chronoText.setText(this.chronoDisplay);
         this.playerScoreText.setText(this.playerScore);
         this.player2ScoreText.setText(this.player2Score);
 
@@ -144,7 +146,7 @@ export default class GameScene extends Phaser.Scene {
             playerScore: this.playerScore,
             player2Score: this.player2Score,
             maxScore: this.maxScore,
-            chrono: this.chrono,
+            chrono: this.timer,
             speed: this.speed
         });
     }
@@ -153,7 +155,7 @@ export default class GameScene extends Phaser.Scene {
      * Timer manager
      */
     secondCounter() {
-        this.chrono++;
+        this.timer++;
     }
 
     /**
@@ -308,8 +310,23 @@ export default class GameScene extends Phaser.Scene {
      */
     slideBot() {
         if (this.ball) {
-            this.player2.setVelocityY(this.ball.body.y - this.player2.body.y + 100);
+            this.player2.setVelocityY((this.ball.body.y - this.player2.body.y) * 4);
         }
+    }
+
+    displayChrono() {
+        let seconds = this.timer % 60;
+        let minutes = Math.floor(this.timer / 60);;
+
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+
+        this.chronoDisplay = minutes + ":" + seconds;
     }
 
     /**
