@@ -1,6 +1,6 @@
-# Traditionnal Pong (made with Phaser3 JS)
+# Pong (made with Phaser3 JS)
 
-Look for [demo](https://ping-pong-kappa.vercel.app/)\
+Look for [demo](https://ping-pong-kappa.vercel.app/)
 
 
 
