@@ -26,7 +26,7 @@ export default class StartScene extends Phaser.Scene {
         });
 
         // Init player vs computer button
-        let playerVsComputer = this.add.text(100, 100, 'Joueur VS Ordi');
+        let playerVsComputer = this.add.text(100, 100, 'Player VS Computer');
         playerVsComputer.setPadding(10);
         playerVsComputer.setStyle({ backgroundColor: '#e55c90', fontSize: 32 });
         playerVsComputer.setInteractive();
@@ -34,7 +34,7 @@ export default class StartScene extends Phaser.Scene {
         playerVsComputer.y = this.game.config.height / 4 - playerVsComputer.height / 2;
 
         // Init computer vs player button
-        let computerVsPlayer = this.add.text(100, 100, 'Ordi VS Joueur');
+        let computerVsPlayer = this.add.text(100, 100, 'Computer VS Player');
         computerVsPlayer.setPadding(10);
         computerVsPlayer.setStyle({ backgroundColor: '#e55c90', fontSize: 32 });
         computerVsPlayer.setInteractive();
@@ -42,9 +42,9 @@ export default class StartScene extends Phaser.Scene {
         computerVsPlayer.y = this.game.config.height * 1.4 / 4 - computerVsPlayer.height / 2;
 
         // Init player vs player button
-        let playerVsPlayer = this.add.text(100, 100, 'Joueur VS Joueur');
+        let playerVsPlayer = this.add.text(100, 100, 'Player VS Player');
         playerVsPlayer.setPadding(10);
-        playerVsPlayer.setStyle({ backgroundColor: '#333', fontSize: 32 });
+        playerVsPlayer.setStyle({ backgroundColor: '#e55c90', fontSize: 32 });
         playerVsPlayer.setInteractive();
         playerVsPlayer.x = this.game.config.width / 2 - playerVsPlayer.width / 2;
         playerVsPlayer.y = (this.game.config.height * 1.8) / 4 - playerVsPlayer.height / 2;
