@@ -96,7 +96,7 @@ export default class GameScene extends Phaser.Scene {
             fill: '#fff',
         });
 
-        //Init general timer for end of scene
+        // Init general timer for end of scene
         if (this.generalTime) {
             this.generalTimer = this.time.addEvent({
                 delay: this.generalTime,
@@ -115,11 +115,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     /**
-     *  Update the scene frame by frame
+     * Update the scene frame by frame
      */
     update() {
         // Set Text to display change
         this.displayChrono();
+
         this.chronoText.setText(this.chronoDisplay);
         this.playerScoreText.setText(this.playerScore);
         this.player2ScoreText.setText(this.player2Score);
@@ -176,7 +177,6 @@ export default class GameScene extends Phaser.Scene {
         ball.setVelocity(randSpeedX, -randSpeedY);
 
         this.physics.world.on('worldbounds', function() {
-            console.log("hello there");
             this.boundSound.play();
         });
 
@@ -222,8 +222,13 @@ export default class GameScene extends Phaser.Scene {
         // Generate ball
         this.ball = this.generateBall();
 
-        // Manage event 
-        this.slide();
+        if (this.choice == 'playerVsComputer' || this.choice == 'computerVsPlayer') {
+            // Manage event 1 player
+            this.slide();
+        } else {
+            // Manage event 2 player
+            this.slide2Players();
+        }
     }
 
     /**
@@ -236,7 +241,6 @@ export default class GameScene extends Phaser.Scene {
 
         // Instantiate player score and display
         this.playerScore = 0;
-        // Instantiate player score and display
         this.player2Score = 0;
 
         // Display score based on choice placement
@@ -286,7 +290,9 @@ export default class GameScene extends Phaser.Scene {
                     this.player2Score++;
                 }
             } else {
-                this.slideBot();
+                if (this.choice != 'playerVsPlayer') {
+                    this.slideBot();
+                }
             }
         }
     }
@@ -314,6 +320,29 @@ export default class GameScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * Event manager context player vs player
+     * We need to detect position of touch
+     * to distribute event to player 1 or player 2
+     */
+    slide2Players() {
+        // Follow pointer move
+        this.input.on(
+            'pointermove',
+            function(pointer) {
+                if (pointer.x > this.game.config.width / 2) {
+                    this.player.setVelocityY((pointer.y - this.player.body.y) * 2);
+                } else {
+                    this.player2.setVelocityY((pointer.y - this.player2.body.y) * 2);
+                }
+            },
+            this
+        );
+    }
+
+    /**
+     * Show chrono
+     */
     displayChrono() {
         let seconds = this.timer % 60;
         let minutes = Math.floor(this.timer / 60);;
