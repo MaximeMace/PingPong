@@ -53,14 +53,14 @@ export default class StartScene extends Phaser.Scene {
         playerVsComputer.on('pointerdown', () => {
             this.goToGameScene('playerVsComputer');
         });
+
         computerVsPlayer.on('pointerdown', () => {
             this.goToGameScene('computerVsPlayer');
         });
 
-        //@TODO Coming soon
-        // playerVsPlayer.on('pointerdown', () => {
-        //     this.goToGameScene('playerVsPlayer');
-        // });
+        playerVsPlayer.on('pointerdown', () => {
+            this.goToGameScene('playerVsPlayer');
+        });
     }
 
     /**
