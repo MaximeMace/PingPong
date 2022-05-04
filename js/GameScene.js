@@ -180,10 +180,14 @@ export default class GameScene extends Phaser.Scene {
         // Detect collision with players
         this.physics.add.collider(ball, this.player, function() {
             this.boundSound.play();
+            ball.body.velocity.x = ball.body.velocity.x * 1.1
+            ball.body.velocity.y = ball.body.velocity.y * 1.1
         }, null, this);
 
         this.physics.add.collider(ball, this.player2, function() {
             this.boundSound.play();
+            ball.body.velocity.x = ball.body.velocity.x * 1.1
+            ball.body.velocity.y = ball.body.velocity.y * 1.1
         }, null, this);
 
         return ball;
@@ -270,6 +274,9 @@ export default class GameScene extends Phaser.Scene {
             if (this.ball.body.x <= 2) {
                 this.ball.body.x = this.game.config.width / 2;
                 this.ball.body.y = this.game.config.height / 2;
+                this.ball.body.velocity.x = Phaser.Math.Between(50, 100) * this.speed;
+                this.ball.body.velocity.y = Phaser.Math.Between(50, 100) * this.speed;
+
                 this.pointSound.play();
                 // Give point
                 if (this.choice == 'playerVsComputer') {
