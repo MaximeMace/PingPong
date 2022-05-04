@@ -38,12 +38,6 @@ export default class GameScene extends Phaser.Scene {
             frameHeight: 200
         });
 
-        // Load border sprite sheet
-        this.load.spritesheet('border', './assets/border.png', {
-            frameWidth: 40,
-            frameHeight: 200
-        });
-
         // Load sound
         this.load.audio('bound', [
             './sounds/bound.wav'
@@ -58,6 +52,9 @@ export default class GameScene extends Phaser.Scene {
      * Create and init assets
      */
     create() {
+        //  We need 1 extra pointers, as we only get 1 by default
+        this.input.addPointer(1);
+
         // Init parameters for the session
         this.delay = 1000;
         this.sizePlayer = 1;
