@@ -53,7 +53,7 @@ export default class GameScene extends Phaser.Scene {
      */
     create() {
         //  We need 1 extra pointers, as we only get 1 by default
-        this.input.addPointer(1);
+        this.input.addPointer(10);
 
         // Init parameters for the session
         this.delay = 1000;
@@ -287,6 +287,9 @@ export default class GameScene extends Phaser.Scene {
             } else if (this.ball.body.x >= this.game.config.width - 50) {
                 this.ball.body.x = this.game.config.width / 2;
                 this.ball.body.y = this.game.config.height / 2;
+                this.ball.body.velocity.x = Phaser.Math.Between(50, 100) * this.speed;
+                this.ball.body.velocity.y = Phaser.Math.Between(50, 100) * this.speed;
+
                 this.pointSound.play();
                 if (this.choice == 'playerVsComputer') {
                     this.playerScore++;
