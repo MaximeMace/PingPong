@@ -21,8 +21,10 @@ export default class EndScene extends Phaser.Scene {
      * Load the game assets.
      */
     preload() {
-        // Change color background to black
-        this.cameras.main.setBackgroundColor('#000000');
+        // Load images
+        this.load.svg('btn', 'assets/btn.svg');
+        this.load.svg('btnHover', 'assets/btnHover.svg');
+        this.load.svg('board', 'assets/board.svg');
 
         // Load sound
         this.load.audio('completed', [
@@ -38,68 +40,113 @@ export default class EndScene extends Phaser.Scene {
         this.completedSound = this.sound.add('completed');
         this.completedSound.play();
 
+        // Init border menu
+        let board = this.add.image(this.game.config.width / 2, (this.game.config.height) * 0.5, 'board').setDepth(0);
+
         // Init text title menu
-        // //@TODO 120 with text width
-        this.title = this.add.text(this.game.config.width / 2 - 150, 100, 'Fin de partie', {
+        this.title = this.add.text(this.game.config.width / 2 - 150, 25, 'Fin de partie', {
             fontSize: '40px',
-            fill: '#fff',
+            fill: '#000',
         });
 
-        var rectangle = this.add.rectangle(
-            this.game.config.width / 2,
-            this.game.config.height / 2,
-            this.game.config.width * 3 / 5,
-            this.game.config.height * 5 / 6).setStrokeStyle(4, 0xffffff);
+        // Center text
+        this.title.x = this.game.config.width / 2 - this.title.width / 2;
 
         // Init retry button
-        let retryBtn = this.add.text(100, 100, 'Recommencer');
-        retryBtn.setPadding(10);
-        retryBtn.setStyle({ backgroundColor: '#e55c90', fontSize: 32 });
-        retryBtn.setInteractive();
-        retryBtn.x = this.game.config.width / 2 - retryBtn.width / 2;
-        retryBtn.y = this.game.config.height / 4 - retryBtn.height / 2;
+        let btn = this.add.image(this.game.config.width / 2, (this.game.config.height) * 0.25, 'btn').setDepth(0);
+        btn.setScale(0.8);
+        btn.setInteractive();
+
+        // Hover event on button
+        btn.on('pointerover', () => {
+            btn.setTint(0xF6F6F6)
+            retry.setTint(0x990000)
+        });
+
+        btn.on('pointerout', function() {
+            btn.clearTint()
+            retry.clearTint()
+        })
+
+        let retry = this.add.text(100, 100, 'Recommencer');
+        retry.setPadding(10);
+        retry.setStyle({ color: '#555', fontSize: 20 });
+        retry.setInteractive();
+
+        // Hover event on text
+        retry.on('pointerover', () => {
+            btn.setTint(0xF6F6F6)
+            retry.setTint(0x990000)
+        });
+
+        retry.on('pointerout', function() {
+            btn.clearTint()
+            retry.clearTint()
+        })
+
+        retry.x = this.game.config.width / 2 - retry.width / 2;
+        retry.y = this.game.config.height / 4 - retry.height / 2;
 
         // Manage retry click
-        retryBtn.on('pointerdown', () => {
+        retry.on('pointerdown', () => {
+            this.goToStartScene();
+        });
+
+        btn.on('pointerdown', () => {
             this.goToStartScene();
         });
 
         // Display report information
-        this.scoreText = this.add.text(this.game.config.width / 2 - 350, 300,
+        this.scoreText = this.add.text(this.game.config.width / 2, 300,
             'Player 1: ' + this.playerScore, {
-                fontSize: '25px',
-                fill: '#fff',
+                fontSize: '20px',
+                fill: '#000',
             });
 
-        this.score2Text = this.add.text(this.game.config.width / 2 - 350, 375,
+        this.scoreText.x = this.game.config.width / 2 - this.scoreText.width / 2;
+
+        this.score2Text = this.add.text(this.game.config.width / 2, 375,
             'Player 2: ' + this.player2Score, {
-                fontSize: '25px',
-                fill: '#fff',
+                fontSize: '20px',
+                fill: '#000',
             });
 
-        this.maxScoreText = this.add.text(this.game.config.width / 2 - 350, 450,
+        this.score2Text.x = this.game.config.width / 2 - this.score2Text.width / 2;
+
+        this.maxScoreText = this.add.text(this.game.config.width / 2, 450,
             'Score max: ' + this.maxScore, {
-                fontSize: '25px',
-                fill: '#fff',
+                fontSize: '20px',
+                fill: '#000',
             });
 
-        this.chronoText = this.add.text(this.game.config.width / 2 - 350, 525,
+        this.maxScoreText.x = this.game.config.width / 2 - this.maxScoreText.width / 2;
+
+        this.chronoText = this.add.text(this.game.config.width / 2, 525,
             'Time: ' + this.chrono + " seconds", {
-                fontSize: '25px',
-                fill: '#fff',
+                fontSize: '20px',
+                fill: '#00',
             });
 
-        this.chronoText = this.add.text(this.game.config.width / 2 - 350, 600,
+        this.chronoText.x = this.game.config.width / 2 - this.chronoText.width / 2;
+
+        this.speedText = this.add.text(this.game.config.width / 2, 600,
             'Speed: ' + this.speed, {
-                fontSize: '25px',
-                fill: '#fff',
+                fontSize: '20px',
+                fill: '#000',
             });
+
+        this.speedText.x = this.game.config.width / 2 - this.speedText.width / 2;
     }
 
     /**
      * Go to Main scene
      */
     goToStartScene() {
-        this.scene.start('StartScene');
+        // Fade out animation
+        this.cameras.main.fadeOut(500, 0, 0, 0)
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start('StartScene');
+        })
     }
 }

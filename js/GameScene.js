@@ -28,13 +28,13 @@ export default class GameScene extends Phaser.Scene {
 
         // Load player sprite sheet
         this.load.spritesheet('player', './assets/player.png', {
-            frameWidth: 40,
+            frameWidth: 50,
             frameHeight: 200
         });
 
         // Load player 2 sprite sheet
         this.load.spritesheet('player2', './assets/player2.png', {
-            frameWidth: 40,
+            frameWidth: 50,
             frameHeight: 200
         });
 
@@ -193,19 +193,18 @@ export default class GameScene extends Phaser.Scene {
         return ball;
     }
 
-
     /**
      * Create players elements
      */
     generatePlayer() {
         if (this.choice == 'playerVsComputer') {
             // Init player position
-            this.player = this.physics.add.sprite(20, 175, 'player');
-            this.player2 = this.physics.add.sprite(this.game.config.width - 20, 475, 'player2');
+            this.player = this.physics.add.sprite(20, 175, 'player').setInteractive({ draggable: true });
+            this.player2 = this.physics.add.sprite(this.game.config.width - 20, 475, 'player2').setInteractive({ draggable: true });
         } else {
             // Init player position
-            this.player = this.physics.add.sprite(this.game.config.width - 20, 475, 'player');
-            this.player2 = this.physics.add.sprite(20, 175, 'player2');
+            this.player = this.physics.add.sprite(this.game.config.width - 20, 475, 'player').setInteractive({ draggable: true });
+            this.player2 = this.physics.add.sprite(20, 175, 'player2').setInteractive({ draggable: true });
         }
 
         // Scale players
@@ -309,13 +308,9 @@ export default class GameScene extends Phaser.Scene {
      */
     slide() {
         // Follow pointer move
-        this.input.on(
-            'pointermove',
-            function(pointer) {
-                this.player.setVelocityY((pointer.y - this.player.body.y) * 2);
-            },
-            this
-        );
+        this.player.on('drag', function(pointer, dragX, dragY) {
+            this.y = dragY;
+        });
     }
 
     /**
@@ -334,17 +329,13 @@ export default class GameScene extends Phaser.Scene {
      */
     slide2Players() {
         // Follow pointer move
-        this.input.on(
-            'pointermove',
-            function(pointer) {
-                if (pointer.x > this.game.config.width / 2) {
-                    this.player.setVelocityY((pointer.y - this.player.body.y) * 2);
-                } else {
-                    this.player2.setVelocityY((pointer.y - this.player2.body.y) * 2);
-                }
-            },
-            this
-        );
+        this.player.on('drag', function(pointer, dragX, dragY) {
+            this.y = dragY;
+        });
+
+        this.player2.on('drag', function(pointer, dragX, dragY) {
+            this.y = dragY;
+        });
     }
 
     /**

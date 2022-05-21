@@ -6,19 +6,14 @@ Look for [demo](https://ping-pong-kappa.vercel.app/)
 
 # 📄 Description
 
-Original version of the Pong game, fully playable on computer and touch screen (tablet, phone, etc.)
-
-> *Phaser is a JS framework dedicated to creating web games.*
-
+A platform project offering several useful tools for data science and data analysis.
 
 
 ## ℹ️ Overview
 
-- The current version of the game offers to choose the player's area on the screen.
-- The player plays against a pnj opponent (an upcoming version will allow 2 players to play on one screen).
+- The current version of the application only contains the architecture on which the tools will be added progressively.
 
 ![example](./example.png)
-
 
 
 ## 🚀 Usage instructions
@@ -28,7 +23,7 @@ The version of Phaser used in this project is version **3.0**.
 Install phaser using npm:
 
 ```
-npm i phaser
+django-admin startproject {myproject}
 ```
 
 
