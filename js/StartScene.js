@@ -151,7 +151,7 @@ export default class StartScene extends Phaser.Scene {
         });
 
         btn2.on('pointerdown', () => {
-            this.goToGameScene('playerVsComputer');
+            this.goToGameScene('computerVsPlayer');
         });
 
         playerVsPlayer.on('pointerdown', () => {
@@ -159,7 +159,7 @@ export default class StartScene extends Phaser.Scene {
         });
 
         btn3.on('pointerdown', () => {
-            this.goToGameScene('playerVsComputer');
+            this.goToGameScene('playerVsPlayer');
         });
     }
 
